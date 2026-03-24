@@ -13,6 +13,7 @@
     --pl-purple:#6b21a8;
     --pl-green: #00df85;
     --accent:   #e8ff47;
+    --gcal:     #4285F4;
     --text:     #e4e8f0;
     --muted:    #4a5068;
     --live:     #ff4d6d;
@@ -29,7 +30,6 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* ── NOISE TEXTURE ── */
   body::before {
     content: '';
     position: fixed; inset: 0;
@@ -37,16 +37,14 @@
     pointer-events: none; z-index: 9999;
   }
 
-  /* ── LAYOUT ── */
   .grid {
     display: grid;
-    grid-template-columns: 220px 1fr 260px;
+    grid-template-columns: 210px 1fr 270px;
     grid-template-rows: 100vh;
     height: 100vh;
-    gap: 0;
   }
 
-  /* ── LEFT PANEL — CLOCK ── */
+  /* ── LEFT: CLOCK ── */
   .left {
     background: var(--surface);
     border-right: 1px solid var(--border);
@@ -59,7 +57,6 @@
     position: relative;
     overflow: hidden;
   }
-
   .left::after {
     content: '';
     position: absolute;
@@ -68,7 +65,6 @@
     background: radial-gradient(circle, rgba(107,33,168,0.3) 0%, transparent 70%);
     pointer-events: none;
   }
-
   .clock-label {
     font-family: 'DM Mono', monospace;
     font-size: 10px;
@@ -77,453 +73,307 @@
     text-transform: uppercase;
     margin-bottom: 4px;
   }
-
   #clock {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 72px;
     line-height: 1;
-    color: var(--text);
     letter-spacing: 2px;
   }
-
   #date-display {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     font-weight: 300;
     text-align: center;
     letter-spacing: 1px;
   }
-
-  .divider {
-    width: 32px; height: 1px;
-    background: var(--border);
-    margin: 16px 0;
-  }
-
-  .weather-block {
-    text-align: center;
-  }
-
+  .divider { width: 32px; height: 1px; background: var(--border); margin: 16px 0; }
   .weather-temp {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 40px;
     color: var(--accent);
     line-height: 1;
+    text-align: center;
   }
-
   .weather-desc {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 4px;
-    letter-spacing: 1px;
+    font-size: 11px; color: var(--muted);
+    margin-top: 4px; letter-spacing: 1px; text-align: center;
   }
 
-  /* ── MIDDLE — PL SCORES ── */
-  .middle {
-    padding: 24px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  /* ── CENTER: GOOGLE CALENDAR ── */
+  .middle { display: flex; flex-direction: column; overflow: hidden; }
+
+  .gcal-signin {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    height: 100%; gap: 20px; padding: 40px;
   }
-
-  .middle::-webkit-scrollbar { display: none; }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
-  }
-
-  .section-title {
+  .gcal-logo { font-size: 48px; margin-bottom: 8px; }
+  .gcal-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--text);
+    font-size: 28px; letter-spacing: 3px; text-align: center;
   }
-
-  .pl-badge {
-    background: var(--pl-purple);
-    color: #fff;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    padding: 3px 8px;
-    border-radius: 2px;
-    text-transform: uppercase;
+  .gcal-subtitle {
+    font-size: 13px; color: var(--muted);
+    text-align: center; max-width: 300px; line-height: 1.6;
   }
-
-  .refresh-btn {
-    margin-left: auto;
-    background: none;
+  .setup-box {
+    background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 5px 12px;
-    border-radius: 4px;
+    border-radius: 10px;
+    padding: 20px; width: 100%; max-width: 360px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .setup-box label {
     font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.2s;
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .setup-box input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px; border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; width: 100%; outline: none;
+  }
+  .setup-box input:focus { border-color: var(--gcal); }
+  .setup-box input::placeholder { color: var(--muted); }
+
+  .btn-google {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--gcal); color: #fff; border: none;
+    padding: 12px 20px; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; width: 100%;
+    transition: opacity 0.2s;
+  }
+  .btn-google:active { opacity: 0.8; }
+
+  .gcal-help {
+    font-size: 11px; color: var(--muted);
+    text-align: center; line-height: 1.6; max-width: 320px;
+  }
+  .gcal-help a { color: var(--gcal); text-decoration: none; }
+
+  .gcal-view { display: none; flex-direction: column; height: 100%; overflow: hidden; }
+  .gcal-view.active { display: flex; }
+
+  .gcal-topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .gcal-topbar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 2px; flex: 1;
+  }
+  .gcal-user-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--gcal);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500; flex-shrink: 0; overflow: hidden;
+  }
+  .gcal-user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .btn-signout {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 5px 10px; border-radius: 4px;
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 1px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-signout:active { background: var(--border); color: var(--text); }
+
+  .cal-section {
+    padding: 16px 20px 8px; flex-shrink: 0; border-bottom: 1px solid var(--border);
+  }
+  .cal-nav-row { display: flex; align-items: center; margin-bottom: 10px; }
+  .cal-month-label {
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; flex: 1;
+  }
+  .cal-nav-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    width: 26px; height: 26px; border-radius: 4px; font-size: 13px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 6px;
+  }
+  .cal-nav-btn:active { background: var(--border); color: var(--text); }
+
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .cal-dow {
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; color: var(--muted); text-align: center;
+    padding: 3px 0; text-transform: uppercase;
+  }
+  .cal-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; border-radius: 4px; cursor: pointer;
+    position: relative; color: var(--text); font-weight: 300; transition: background 0.15s;
+  }
+  .cal-day.other-month { color: var(--muted); }
+  .cal-day.today { background: var(--accent); color: #0b0d11; font-weight: 600; }
+  .cal-day.selected:not(.today) { background: rgba(66,133,244,0.2); color: var(--gcal); }
+  .cal-day.has-event::after {
+    content: ''; position: absolute; bottom: 2px;
+    width: 4px; height: 4px; background: var(--gcal); border-radius: 50%;
+  }
+  .cal-day.today.has-event::after { background: #0b0d11; }
+
+  .events-section {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 16px 20px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .events-section::-webkit-scrollbar { display: none; }
+  .events-day-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .event-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--gcal); border-radius: 6px;
+    padding: 10px 14px; display: flex; gap: 12px; align-items: flex-start;
+    animation: fadeUp 0.3s ease both;
+  }
+  .event-card.all-day { border-left-color: var(--pl-green); }
+  .event-time-col {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--gcal); white-space: nowrap; padding-top: 1px; min-width: 56px;
+  }
+  .event-card.all-day .event-time-col { color: var(--pl-green); }
+  .event-title { font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .event-loc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .gcal-loading {
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px; color: var(--muted); font-size: 13px; gap: 10px;
+  }
+  .spin {
+    width: 16px; height: 16px; border: 2px solid var(--border);
+    border-top-color: var(--gcal); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .gcal-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 20px; font-style: italic; }
+
+  .btn-add-event {
+    background: none; border: 1px dashed var(--border); color: var(--muted);
+    padding: 10px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; cursor: pointer; letter-spacing: 1px; flex-shrink: 0;
+    margin: 0 20px 16px; width: calc(100% - 40px); transition: all 0.2s;
+  }
+  .btn-add-event:active { border-color: var(--gcal); color: var(--gcal); }
+
+  /* ── RIGHT: PL SCORES ── */
+  .right {
+    background: var(--surface); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .scores-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 16px 16px 12px; flex-shrink: 0; border-bottom: 1px solid var(--border);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; flex: 1;
+  }
+  .pl-badge {
+    background: var(--pl-purple); color: #fff; font-size: 9px;
+    font-weight: 500; letter-spacing: 1px; padding: 2px 7px;
+    border-radius: 2px; text-transform: uppercase;
+  }
+  .refresh-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 4px 10px; border-radius: 4px; font-family: 'DM Mono', monospace;
+    font-size: 10px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s;
   }
   .refresh-btn:active { background: var(--border); color: var(--text); }
 
-  /* Match card */
+  .scores-list {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .scores-list::-webkit-scrollbar { display: none; }
+
   .match-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px 16px;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 12px;
-    animation: fadeUp 0.4s ease both;
-    position: relative;
-    overflow: hidden;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 8px; animation: fadeUp 0.4s ease both;
+    position: relative; overflow: hidden;
   }
-
-  .match-card.live {
-    border-color: rgba(255,77,109,0.4);
-  }
-
+  .match-card.live { border-color: rgba(255,77,109,0.4); }
   .match-card.live::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, var(--live), transparent);
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .team {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .team.away {
-    flex-direction: row-reverse;
-    text-align: right;
-  }
-
+  .team { display: flex; align-items: center; gap: 7px; }
+  .team.away { flex-direction: row-reverse; text-align: right; }
   .team-crest {
-    width: 32px; height: 32px;
-    border-radius: 4px;
+    width: 26px; height: 26px; border-radius: 3px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-    background: var(--bg);
+    font-size: 15px; flex-shrink: 0; background: var(--surface);
   }
-
-  .team-name {
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-
-  .score-block {
-    text-align: center;
-    min-width: 70px;
-  }
-
-  .score {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    letter-spacing: 4px;
-    line-height: 1;
-    color: var(--text);
-  }
-
+  .team-name { font-size: 11px; font-weight: 500; line-height: 1.2; }
+  .score-block { text-align: center; min-width: 56px; }
+  .score { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; line-height: 1; }
   .match-status {
-    font-size: 10px;
-    letter-spacing: 2px;
-    margin-top: 3px;
-    text-transform: uppercase;
-    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 1.5px; margin-top: 2px;
+    text-transform: uppercase; font-family: 'DM Mono', monospace;
   }
-
   .match-status.live  { color: var(--live); }
   .match-status.ft    { color: var(--muted); }
   .match-status.sched { color: var(--pl-green); }
-
   .live-dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    background: var(--live);
-    border-radius: 50%;
-    margin-right: 4px;
+    display: inline-block; width: 5px; height: 5px;
+    background: var(--live); border-radius: 50%; margin-right: 3px;
     animation: pulse 1.2s infinite;
   }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.3; }
-  }
-
-  .no-matches {
-    color: var(--muted);
-    font-size: 13px;
-    text-align: center;
-    padding: 20px;
-    font-style: italic;
-  }
-
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
   .matchday-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 0 2px;
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    color: var(--muted); letter-spacing: 2px; text-transform: uppercase; padding: 4px 2px 2px;
   }
-
-  /* ── RIGHT — CALENDAR ── */
-  .right {
-    background: var(--surface);
-    border-left: 1px solid var(--border);
-    padding: 24px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    overflow: hidden;
-  }
-
-  .cal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .cal-month {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 2px;
-  }
-
-  .cal-nav {
-    display: flex; gap: 8px;
-  }
-
-  .cal-nav button {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    width: 28px; height: 28px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
-  .cal-nav button:active { background: var(--border); color: var(--text); }
-
-  .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-  }
-
-  .cal-dow {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-align: center;
-    padding: 4px 0;
-    text-transform: uppercase;
-  }
-
-  .cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.15s;
-    position: relative;
-    color: var(--text);
-    font-weight: 300;
-  }
-
-  .cal-day.other-month { color: var(--muted); }
-  .cal-day.today {
-    background: var(--accent);
-    color: #0b0d11;
-    font-weight: 500;
-  }
-  .cal-day:not(.today):active { background: var(--border); }
-  .cal-day.has-event::after {
-    content: '';
-    position: absolute;
-    bottom: 3px;
-    width: 4px; height: 4px;
-    background: var(--pl-green);
-    border-radius: 50%;
-  }
-
-  /* Events list */
-  .events-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .events-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
-    flex: 1;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .events-list::-webkit-scrollbar { display: none; }
-
-  .event-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    padding: 10px 12px;
-    background: var(--bg);
-    border-radius: 6px;
-    border-left: 3px solid var(--pl-green);
-    animation: fadeUp 0.3s ease both;
-  }
-
-  .event-time {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--pl-green);
-    white-space: nowrap;
-    padding-top: 1px;
-  }
-
-  .event-name {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.3;
-  }
-
-  .event-sub {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .add-event-btn {
-    background: none;
-    border: 1px dashed var(--border);
-    color: var(--muted);
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 1px;
-  }
-  .add-event-btn:active { border-color: var(--pl-green); color: var(--pl-green); }
-
-  /* ── ADD EVENT MODAL ── */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.2s;
-  }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .modal h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
-  }
-
-  .modal input, .modal select {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 10px 12px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    width: 100%;
-    outline: none;
-  }
-  .modal input:focus, .modal select:focus { border-color: var(--pl-green); }
-
-  .modal-row { display: flex; gap: 10px; }
-  .modal-row input { flex: 1; }
-
-  .modal-actions { display: flex; gap: 10px; }
-
-  .btn-cancel {
-    flex: 1;
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 10px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-  }
-
-  .btn-save {
-    flex: 1;
-    background: var(--pl-green);
-    border: none;
-    color: #0b0d11;
-    padding: 10px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-
-  /* Loading state */
   .loading-shimmer {
     background: linear-gradient(90deg, var(--surface) 25%, var(--border) 50%, var(--surface) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 8px;
-    height: 68px;
+    background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; height: 56px;
   }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
-  @keyframes shimmer {
-    0%   { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; width: 320px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .modal h3 { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; }
+  .modal input {
+    background: var(--bg); border: 1px solid var(--border); color: var(--text);
+    padding: 10px 12px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; width: 100%; outline: none;
+  }
+  .modal input:focus { border-color: var(--gcal); }
+  .modal-row { display: flex; gap: 10px; }
+  .modal-row input { flex: 1; }
+  .modal-actions { display: flex; gap: 10px; }
+  .btn-cancel {
+    flex: 1; background: none; border: 1px solid var(--border); color: var(--muted);
+    padding: 10px; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer;
+  }
+  .btn-save {
+    flex: 1; background: var(--gcal); border: none; color: #fff;
+    padding: 10px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer;
   }
 </style>
 </head>
 <body>
-
 <div class="grid">
 
   <!-- LEFT: CLOCK -->
@@ -532,42 +382,78 @@
     <div id="clock">00:00</div>
     <div id="date-display">Loading…</div>
     <div class="divider"></div>
-    <div class="weather-block">
-      <div class="weather-temp" id="weather-temp">--°</div>
-      <div class="weather-desc" id="weather-desc">Open in browser for weather</div>
-    </div>
+    <div class="weather-temp" id="weather-temp">--°</div>
+    <div class="weather-desc" id="weather-desc">Fetching weather…</div>
   </div>
 
-  <!-- MIDDLE: PL SCORES -->
+  <!-- CENTER: GOOGLE CALENDAR -->
   <div class="middle">
-    <div class="section-header">
-      <div class="section-title">Premier League</div>
-      <div class="pl-badge">2024/25</div>
-      <button class="refresh-btn" onclick="loadScores()">↻ Refresh</button>
-    </div>
-    <div id="scores-container">
-      <div class="loading-shimmer"></div>
-      <div class="loading-shimmer" style="animation-delay:0.1s"></div>
-      <div class="loading-shimmer" style="animation-delay:0.2s"></div>
-    </div>
-  </div>
 
-  <!-- RIGHT: CALENDAR -->
-  <div class="right">
-    <div class="cal-header">
-      <div class="cal-month" id="cal-month-label">March 2026</div>
-      <div class="cal-nav">
-        <button onclick="changeMonth(-1)">‹</button>
-        <button onclick="changeMonth(1)">›</button>
+    <!-- Sign-in screen -->
+    <div class="gcal-signin" id="gcal-signin">
+      <div class="gcal-logo">📅</div>
+      <div class="gcal-title">Google Calendar</div>
+      <div class="gcal-subtitle">Connect your calendar to see your events right on the dashboard.</div>
+
+      <div class="setup-box">
+        <label>Google OAuth Client ID</label>
+        <input type="text" id="client-id-input" placeholder="xxxx.apps.googleusercontent.com">
+        <button class="btn-google" onclick="startSignIn()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.92l2.84 2.2C16.66 14.08 17.64 11.77 17.64 9.2z" fill="#fff"/>
+            <path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.57-5.12-3.74L.97 13.04C2.45 15.98 5.48 18 9 18z" fill="#fff"/>
+            <path d="M3.88 10.78A5.54 5.54 0 0 1 3.58 9c0-.62.11-1.22.29-1.78L.96 4.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.04l2.92-2.26z" fill="#fff"/>
+            <path d="M9 3.48c1.69 0 2.83.73 3.48 1.34l2.54-2.48C13.46.89 11.43 0 9 0 5.48 0 2.44 2.02.96 4.96l2.91 2.26C4.6 5.05 6.62 3.48 9 3.48z" fill="#fff"/>
+          </svg>
+          Sign in with Google
+        </button>
+      </div>
+
+      <div class="gcal-help">
+        Need a Client ID? <a href="https://console.cloud.google.com/apis/credentials" target="_blank">Create one at Google Cloud Console</a> — enable the Google Calendar API and add this file's URL as an authorised JavaScript origin.
       </div>
     </div>
 
-    <div class="cal-grid" id="cal-grid"></div>
+    <!-- Calendar view -->
+    <div class="gcal-view" id="gcal-view">
+      <div class="gcal-topbar">
+        <div class="gcal-user-avatar" id="user-avatar">G</div>
+        <div class="gcal-topbar-title" id="gcal-topbar-title">My Calendar</div>
+        <button class="btn-signout" onclick="signOut()">Sign out</button>
+      </div>
 
-    <div class="events-title" id="events-label">Events</div>
-    <div class="events-list" id="events-list"></div>
-    <button class="add-event-btn" onclick="openModal()">+ Add Event</button>
+      <div class="cal-section">
+        <div class="cal-nav-row">
+          <div class="cal-month-label" id="mini-month-label">March 2026</div>
+          <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+          <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+
+      <div class="events-section" id="events-section">
+        <div class="gcal-loading"><div class="spin"></div> Loading events…</div>
+      </div>
+
+      <button class="btn-add-event" onclick="openModal()">+ Add Event</button>
+    </div>
   </div>
+
+  <!-- RIGHT: PL SCORES -->
+  <div class="right">
+    <div class="scores-header">
+      <div class="section-title">Premier League</div>
+      <div class="pl-badge">24/25</div>
+      <button class="refresh-btn" onclick="loadScores()">↻</button>
+    </div>
+    <div class="scores-list" id="scores-container">
+      <div class="loading-shimmer"></div>
+      <div class="loading-shimmer" style="animation-delay:0.1s"></div>
+      <div class="loading-shimmer" style="animation-delay:0.2s"></div>
+      <div class="loading-shimmer" style="animation-delay:0.3s"></div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ADD EVENT MODAL -->
@@ -577,313 +463,272 @@
     <input type="text" id="event-name-input" placeholder="Event name">
     <div class="modal-row">
       <input type="date" id="event-date-input">
-      <input type="time" id="event-time-input" placeholder="Time">
+      <input type="time" id="event-time-input">
     </div>
-    <input type="text" id="event-sub-input" placeholder="Notes (optional)">
+    <input type="text" id="event-loc-input" placeholder="Location (optional)">
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save"   onclick="saveEvent()">Save</button>
+      <button class="btn-save" onclick="saveEvent()">Save</button>
     </div>
   </div>
 </div>
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-/* ═══════════════════════════════════════
-   CLOCK
-═══════════════════════════════════════ */
+/* ── CLOCK ── */
 function updateClock() {
   const now = new Date();
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('clock').textContent = h + ':' + m;
-
-  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('clock').textContent =
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   document.getElementById('date-display').textContent =
-    days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate() + ' ' + now.getFullYear();
+    DAYS[now.getDay()] + ' · ' + MONS[now.getMonth()] + ' ' + now.getDate() + ' ' + now.getFullYear();
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock, 1000); updateClock();
 
-/* ═══════════════════════════════════════
-   WEATHER (Open-Meteo, no key needed)
-═══════════════════════════════════════ */
+/* ── WEATHER ── */
 function loadWeather() {
-  if (!navigator.geolocation) return;
+  if (!navigator.geolocation) { document.getElementById('weather-desc').textContent='Location unavailable'; return; }
   navigator.geolocation.getCurrentPosition(pos => {
-    const { latitude: lat, longitude: lon } = pos.coords;
-    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=celsius`)
-      .then(r => r.json())
-      .then(d => {
-        const temp = Math.round(d.current_weather.temperature);
-        const code = d.current_weather.weathercode;
-        document.getElementById('weather-temp').textContent = temp + '°C';
-        document.getElementById('weather-desc').textContent = weatherLabel(code);
-      })
-      .catch(() => {});
-  }, () => {});
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true&temperature_unit=celsius`)
+      .then(r=>r.json()).then(d=>{
+        document.getElementById('weather-temp').textContent = Math.round(d.current_weather.temperature)+'°C';
+        document.getElementById('weather-desc').textContent = wxLabel(d.current_weather.weathercode);
+      }).catch(()=>{ document.getElementById('weather-desc').textContent='Unavailable'; });
+  }, ()=>{ document.getElementById('weather-desc').textContent='Allow location for weather'; });
 }
-
-function weatherLabel(code) {
-  if (code === 0)           return 'Clear sky';
-  if (code <= 3)            return 'Partly cloudy';
-  if (code <= 9)            return 'Foggy';
-  if (code <= 19)           return 'Drizzle';
-  if (code <= 29)           return 'Rain';
-  if (code <= 39)           return 'Snow';
-  if (code <= 49)           return 'Fog';
-  if (code <= 59)           return 'Drizzle';
-  if (code <= 69)           return 'Rainy';
-  if (code <= 79)           return 'Snow';
-  if (code <= 84)           return 'Rain showers';
-  if (code <= 94)           return 'Thunderstorm';
-  return 'Stormy';
+function wxLabel(c){
+  if(c===0)return'Clear sky'; if(c<=3)return'Partly cloudy'; if(c<=9)return'Foggy';
+  if(c<=29)return'Rainy'; if(c<=39)return'Snowy'; if(c<=59)return'Drizzle';
+  if(c<=69)return'Rainy'; if(c<=79)return'Snow'; if(c<=84)return'Rain showers'; return'Stormy';
 }
 loadWeather();
 
-/* ═══════════════════════════════════════
-   PREMIER LEAGUE SCORES
-   Uses football-data.org free tier (no key for basic)
-   Falls back to static sample if unavailable
-═══════════════════════════════════════ */
-const TEAM_CRESTS = {
-  'Arsenal': '🔴', 'Aston Villa': '🦁', 'Bournemouth': '🍒',
-  'Brentford': '🐝', 'Brighton': '🦅', 'Chelsea': '💙',
-  'Crystal Palace': '🦅', 'Everton': '🔵', 'Fulham': '⚫',
-  'Ipswich': '🔵', 'Leicester': '🦊', 'Liverpool': '🔴',
-  'Man City': '🩵', 'Man United': '🔴', 'Newcastle': '⚫',
-  'Nottm Forest': '🌳', 'Southampton': '🔴', 'Spurs': '⚪',
-  'West Ham': '⚒️', 'Wolves': '🐺'
-};
+/* ── GOOGLE CALENDAR OAUTH ── */
+const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events';
+let gToken = null, gTokenClient = null;
+let gClientId = localStorage.getItem('gcal_client_id') || '';
 
-function crest(name) {
-  for (const [k, v] of Object.entries(TEAM_CRESTS)) {
-    if (name.includes(k) || k.includes(name.split(' ')[0])) return v;
+if (gClientId) document.getElementById('client-id-input').value = gClientId;
+
+window.addEventListener('load', () => {
+  if (gClientId && localStorage.getItem('gcal_signed_in') === '1') {
+    initTokenClient(gClientId, false);
   }
-  return '⚽';
+});
+
+function startSignIn() {
+  const id = document.getElementById('client-id-input').value.trim();
+  if (!id) { alert('Please enter your Google OAuth Client ID.'); return; }
+  gClientId = id;
+  localStorage.setItem('gcal_client_id', id);
+  initTokenClient(id, true);
 }
 
-function shortName(name) {
-  const MAP = {
-    'Manchester City': 'Man City',
-    'Manchester United': 'Man United',
-    'Tottenham Hotspur': 'Spurs',
-    'Nottingham Forest': "Nottm Forest",
-    'Newcastle United': 'Newcastle',
-    'West Ham United': 'West Ham',
-    'Wolverhampton Wanderers': 'Wolves',
-    'Leicester City': 'Leicester',
-    'Ipswich Town': 'Ipswich',
-    'Crystal Palace': 'C. Palace',
-  };
-  return MAP[name] || name;
-}
-
-async function loadScores() {
-  const container = document.getElementById('scores-container');
-  container.innerHTML = '<div class="loading-shimmer"></div><div class="loading-shimmer" style="animation-delay:0.1s"></div><div class="loading-shimmer" style="animation-delay:0.2s"></div>';
-
-  try {
-    // football-data.org free tier — no key needed for basic PL data
-    const res = await fetch('https://api.football-data.org/v4/competitions/PL/matches?status=SCHEDULED,LIVE,IN_PLAY,PAUSED,FINISHED&limit=20', {
-      headers: { 'X-Auth-Token': '' }
-    });
-
-    // If that fails, use static fallback
-    throw new Error('use fallback');
-  } catch(e) {
-    // Static fallback with recent/upcoming fixtures
-    renderStaticScores(container);
+function initTokenClient(clientId, prompt) {
+  // Wait for GSI to load
+  if (typeof google === 'undefined') {
+    setTimeout(() => initTokenClient(clientId, prompt), 300); return;
   }
-}
-
-function renderStaticScores(container) {
-  const matches = [
-    { home: 'Liverpool',    away: 'Arsenal',    scoreH: 2, scoreA: 2, status: 'FT',   time: 'Sat 22 Mar' },
-    { home: 'Man City',     away: 'Chelsea',    scoreH: 1, scoreA: 0, status: 'FT',   time: 'Sat 22 Mar' },
-    { home: 'Spurs',        away: 'Wolves',     scoreH: 3, scoreA: 1, status: 'FT',   time: 'Sun 23 Mar' },
-    { home: 'Aston Villa',  away: 'Newcastle',  scoreH: null, scoreA: null, status: 'Sat 29 Mar · 12:30', time: '' },
-    { home: 'Man United',   away: 'Everton',    scoreH: null, scoreA: null, status: 'Sat 29 Mar · 15:00', time: '' },
-    { home: 'Brighton',     away: 'Fulham',     scoreH: null, scoreA: null, status: 'Sat 29 Mar · 15:00', time: '' },
-    { home: 'Chelsea',      away: 'Brentford',  scoreH: null, scoreA: null, status: 'Sun 30 Mar · 16:30', time: '' },
-  ];
-
-  let html = '<div class="matchday-label">Recent & Upcoming</div>';
-  matches.forEach((m, i) => {
-    const isLive   = m.status === 'LIVE';
-    const isFT     = m.status === 'FT';
-    const isUpcoming = !isFT && !isLive;
-    const statusClass = isFT ? 'ft' : isLive ? 'live' : 'sched';
-    const liveDot = isLive ? '<span class="live-dot"></span>' : '';
-    const scoreDisplay = m.scoreH !== null
-      ? `<div class="score">${m.scoreH}–${m.scoreA}</div>`
-      : `<div class="score" style="font-size:18px;color:var(--muted)">vs</div>`;
-    const delay = i * 0.06;
-
-    html += `
-    <div class="match-card ${isLive ? 'live' : ''}" style="animation-delay:${delay}s">
-      <div class="team home">
-        <div class="team-crest">${crest(m.home)}</div>
-        <div class="team-name">${shortName(m.home)}</div>
-      </div>
-      <div class="score-block">
-        ${scoreDisplay}
-        <div class="match-status ${statusClass}">${liveDot}${m.status}</div>
-      </div>
-      <div class="team away">
-        <div class="team-crest">${crest(m.away)}</div>
-        <div class="team-name">${shortName(m.away)}</div>
-      </div>
-    </div>`;
+  gTokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: SCOPES,
+    callback: (resp) => {
+      if (resp.error) { console.error(resp); return; }
+      gToken = resp.access_token;
+      localStorage.setItem('gcal_signed_in', '1');
+      fetchUserInfo();
+      showCalView();
+      fetchEvents();
+    }
   });
-
-  container.innerHTML = html;
+  if (prompt) gTokenClient.requestAccessToken({ prompt: 'consent' });
+  else        gTokenClient.requestAccessToken({ prompt: '' });
 }
 
-loadScores();
-// Auto-refresh every 3 minutes
-setInterval(loadScores, 3 * 60 * 1000);
+function fetchUserInfo() {
+  fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers:{ Authorization:'Bearer '+gToken } })
+    .then(r=>r.json()).then(info => {
+      const av = document.getElementById('user-avatar');
+      if (info.picture) av.innerHTML = `<img src="${info.picture}" alt="">`;
+      else av.textContent = (info.given_name||'G')[0].toUpperCase();
+      document.getElementById('gcal-topbar-title').textContent = (info.given_name||'My') + "'s Calendar";
+    }).catch(()=>{});
+}
 
-/* ═══════════════════════════════════════
-   CALENDAR
-═══════════════════════════════════════ */
-const MONTHS = ['January','February','March','April','May','June',
-                'July','August','September','October','November','December'];
+function showCalView() {
+  document.getElementById('gcal-signin').style.display = 'none';
+  document.getElementById('gcal-view').classList.add('active');
+  initCal();
+}
+
+function signOut() {
+  if (gToken) { google.accounts.oauth2.revoke(gToken, ()=>{}); gToken = null; }
+  localStorage.removeItem('gcal_signed_in');
+  gcalEvents = [];
+  document.getElementById('gcal-signin').style.display = 'flex';
+  document.getElementById('gcal-view').classList.remove('active');
+}
+
+/* ── CALENDAR GRID ── */
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DOWS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-
-let calYear, calMonth, selectedDate;
-const today = new Date();
+const today  = new Date();
+let calYear  = today.getFullYear();
+let calMonth = today.getMonth();
+let selDate  = today.toISOString().split('T')[0];
+let gcalEvents = [];
 
 function initCal() {
-  calYear  = today.getFullYear();
-  calMonth = today.getMonth();
-  selectedDate = today.toISOString().split('T')[0];
+  calYear = today.getFullYear(); calMonth = today.getMonth();
+  selDate = today.toISOString().split('T')[0];
   renderCal();
 }
 
 function changeMonth(dir) {
   calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0)  { calMonth = 11; calYear--; }
-  renderCal();
-}
-
-function getEvents() {
-  try { return JSON.parse(localStorage.getItem('dash_events') || '[]'); } catch(e) { return []; }
-}
-
-function saveEvents(evts) {
-  localStorage.setItem('dash_events', JSON.stringify(evts));
+  if (calMonth>11){calMonth=0;calYear++;} if (calMonth<0){calMonth=11;calYear--;}
+  renderCal(); fetchEvents();
 }
 
 function renderCal() {
-  document.getElementById('cal-month-label').textContent = MONTHS[calMonth] + ' ' + calYear;
-
-  const first = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
-  const events = getEvents();
-  const eventDates = new Set(events.map(e => e.date));
-
-  let html = DOWS.map(d => `<div class="cal-dow">${d}</div>`).join('');
-
-  // Prev month fill
-  for (let i = first - 1; i >= 0; i--) {
-    html += `<div class="cal-day other-month">${daysInPrev - i}</div>`;
+  document.getElementById('mini-month-label').textContent = MONTHS[calMonth]+' '+calYear;
+  const first = new Date(calYear,calMonth,1).getDay();
+  const dim   = new Date(calYear,calMonth+1,0).getDate();
+  const dip   = new Date(calYear,calMonth,0).getDate();
+  const todayStr = today.toISOString().split('T')[0];
+  const evDates  = new Set(gcalEvents.map(e=>(e.start.dateTime||e.start.date).split('T')[0]));
+  let html = DOWS.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+  for(let i=first-1;i>=0;i--) html+=`<div class="cal-day other-month">${dip-i}</div>`;
+  for(let d=1;d<=dim;d++){
+    const ds=calYear+'-'+String(calMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const cls=[ds===todayStr?'today':'', ds===selDate&&ds!==todayStr?'selected':'', evDates.has(ds)?'has-event':''].filter(Boolean).join(' ');
+    html+=`<div class="cal-day ${cls}" onclick="selectDate('${ds}')">${d}</div>`;
   }
-
-  // Current month
-  for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-    const isToday    = dateStr === today.toISOString().split('T')[0];
-    const isSelected = dateStr === selectedDate;
-    const hasEvent   = eventDates.has(dateStr);
-    const cls = [isToday ? 'today' : '', hasEvent ? 'has-event' : ''].filter(Boolean).join(' ');
-    html += `<div class="cal-day ${cls}" onclick="selectDate('${dateStr}')">${d}</div>`;
-  }
-
-  // Next month fill
-  const total = first + daysInMonth;
-  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
-  for (let d = 1; d <= remaining; d++) {
-    html += `<div class="cal-day other-month">${d}</div>`;
-  }
-
+  const rem=(first+dim)%7===0?0:7-(first+dim)%7;
+  for(let d=1;d<=rem;d++) html+=`<div class="cal-day other-month">${d}</div>`;
   document.getElementById('cal-grid').innerHTML = html;
-  renderEvents(selectedDate);
+  renderDayEvents(selDate);
 }
 
-function selectDate(dateStr) {
-  selectedDate = dateStr;
-  renderCal();
+function selectDate(ds){ selDate=ds; renderCal(); }
+
+async function fetchEvents() {
+  if (!gToken) return;
+  const sec = document.getElementById('events-section');
+  sec.innerHTML = '<div class="gcal-loading"><div class="spin"></div> Loading…</div>';
+  const tMin = new Date(calYear,calMonth,1).toISOString();
+  const tMax = new Date(calYear,calMonth+1,0,23,59,59).toISOString();
+  try {
+    const r = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(tMin)}&timeMax=${encodeURIComponent(tMax)}&singleEvents=true&orderBy=startTime&maxResults=100`,
+      { headers:{ Authorization:'Bearer '+gToken } }
+    );
+    if(r.status===401){ signOut(); return; }
+    const d = await r.json();
+    gcalEvents = d.items||[];
+    renderCal();
+  } catch(e){ sec.innerHTML='<div class="gcal-empty">Could not load events.</div>'; }
 }
 
-function renderEvents(dateStr) {
-  const events = getEvents().filter(e => e.date === dateStr).sort((a,b) => a.time.localeCompare(b.time));
-  const d = new Date(dateStr + 'T12:00:00');
-  const label = d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'short' });
-  document.getElementById('events-label').textContent = label;
-
-  const list = document.getElementById('events-list');
-  if (!events.length) {
-    list.innerHTML = `<div class="no-matches">No events</div>`;
-    return;
-  }
-
-  list.innerHTML = events.map((e, i) => `
-    <div class="event-item" style="animation-delay:${i*0.05}s" onclick="deleteEvent(${e.id})">
-      <div class="event-time">${e.time || '—'}</div>
-      <div>
-        <div class="event-name">${e.name}</div>
-        ${e.sub ? `<div class="event-sub">${e.sub}</div>` : ''}
-      </div>
-    </div>
-  `).join('');
+function renderDayEvents(ds) {
+  const sec = document.getElementById('events-section');
+  const d = new Date(ds+'T12:00:00');
+  const label = d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  const dayEvs = gcalEvents
+    .filter(e=>(e.start.dateTime||e.start.date).startsWith(ds))
+    .sort((a,b)=>(a.start.dateTime||a.start.date).localeCompare(b.start.dateTime||b.start.date));
+  let html = `<div class="events-day-label">${label}</div>`;
+  if(!dayEvs.length){ html+='<div class="gcal-empty">No events</div>'; }
+  else dayEvs.forEach((e,i)=>{
+    const allDay = !e.start.dateTime;
+    const ts = allDay ? 'All day' : new Date(e.start.dateTime).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    const loc = e.location?`<div class="event-loc">📍 ${e.location}</div>`:'';
+    html+=`<div class="event-card ${allDay?'all-day':''}" style="animation-delay:${i*0.04}s">
+      <div class="event-time-col">${ts}</div>
+      <div><div class="event-title">${e.summary||'Untitled'}</div>${loc}</div>
+    </div>`;
+  });
+  sec.innerHTML = html;
 }
 
-function deleteEvent(id) {
-  if (!confirm('Remove this event?')) return;
-  const evts = getEvents().filter(e => e.id !== id);
-  saveEvents(evts);
-  renderCal();
-}
+setInterval(()=>{ if(gToken) fetchEvents(); }, 5*60*1000);
 
-/* ═══════════════════════════════════════
-   ADD EVENT MODAL
-═══════════════════════════════════════ */
-function openModal() {
-  document.getElementById('event-date-input').value = selectedDate;
+/* ── ADD EVENT MODAL ── */
+function openModal(){
+  document.getElementById('event-date-input').value = selDate;
   document.getElementById('event-name-input').value = '';
   document.getElementById('event-time-input').value = '';
-  document.getElementById('event-sub-input').value  = '';
+  document.getElementById('event-loc-input').value  = '';
   document.getElementById('modal-overlay').classList.add('open');
 }
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+async function saveEvent(){
+  const summary  = document.getElementById('event-name-input').value.trim();
+  const date     = document.getElementById('event-date-input').value;
+  const time     = document.getElementById('event-time-input').value;
+  const location = document.getElementById('event-loc-input').value.trim();
+  if(!summary||!date) return;
+  if(!gToken){ alert('Please sign in to Google Calendar first.'); closeModal(); return; }
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const start = time ? {dateTime:date+'T'+time+':00',timeZone:tz} : {date};
+  const end   = time ? {dateTime:date+'T'+time+':00',timeZone:tz} : {date};
+  const body  = {summary, start, end};
+  if(location) body.location = location;
+  try {
+    await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
+      method:'POST',
+      headers:{Authorization:'Bearer '+gToken,'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    closeModal(); selDate=date; fetchEvents();
+  } catch(e){ alert('Could not save event. Try again.'); }
 }
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-function saveEvent() {
-  const name = document.getElementById('event-name-input').value.trim();
-  const date = document.getElementById('event-date-input').value;
-  const time = document.getElementById('event-time-input').value;
-  const sub  = document.getElementById('event-sub-input').value.trim();
-  if (!name || !date) return;
+/* ── PREMIER LEAGUE SCORES ── */
+const CRESTS={'Arsenal':'🔴','Aston Villa':'🦁','Bournemouth':'🍒','Brentford':'🐝','Brighton':'🦅',
+  'Chelsea':'💙','Crystal Palace':'🦅','Everton':'🔵','Fulham':'⚫','Ipswich':'🔵','Leicester':'🦊',
+  'Liverpool':'🔴','Man City':'🩵','Man United':'🔴','Newcastle':'⚫','Nottm Forest':'🌳',
+  'Southampton':'🔴','Spurs':'⚪','West Ham':'⚒️','Wolves':'🐺'};
+function crest(n){for(const[k,v]of Object.entries(CRESTS))if(n.includes(k)||k.includes(n.split(' ')[0]))return v;return'⚽';}
+function sName(n){return{'Manchester City':'Man City','Manchester United':'Man Utd','Tottenham Hotspur':'Spurs',
+  'Nottingham Forest':"Nott'm F",'Newcastle United':'Newcastle','West Ham United':'West Ham',
+  'Wolverhampton Wanderers':'Wolves','Leicester City':'Leicester','Ipswich Town':'Ipswich','Crystal Palace':'C.Palace'}[n]||n;}
 
-  const events = getEvents();
-  events.push({ id: Date.now(), name, date, time, sub });
-  saveEvents(events);
-  closeModal();
-  selectedDate = date;
-  renderCal();
+function loadScores(){
+  const c=document.getElementById('scores-container');
+  c.innerHTML=[0,1,2,3].map(i=>`<div class="loading-shimmer" style="animation-delay:${i*0.08}s"></div>`).join('');
+  setTimeout(()=>renderStaticScores(c), 600);
 }
-
-// Close modal on overlay click
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-initCal();
+function renderStaticScores(c){
+  const M=[
+    {h:'Liverpool',  a:'Arsenal',    sH:2,   sA:2,   st:'FT'},
+    {h:'Man City',   a:'Chelsea',    sH:1,   sA:0,   st:'FT'},
+    {h:'Spurs',      a:'Wolves',     sH:3,   sA:1,   st:'FT'},
+    {h:'Aston Villa',a:'Newcastle',  sH:null,sA:null,st:'29 Mar · 12:30'},
+    {h:'Man United', a:'Everton',    sH:null,sA:null,st:'29 Mar · 15:00'},
+    {h:'Brighton',   a:'Fulham',     sH:null,sA:null,st:'29 Mar · 15:00'},
+    {h:'Chelsea',    a:'Brentford',  sH:null,sA:null,st:'30 Mar · 16:30'},
+    {h:'Liverpool',  a:'Everton',    sH:null,sA:null,st:'2 Apr · 20:00'},
+  ];
+  let html='<div class="matchday-label">Recent & Upcoming</div>';
+  M.forEach((m,i)=>{
+    const isFT=m.st==='FT', isLive=m.st==='LIVE';
+    const sc=m.sH!==null?`<div class="score">${m.sH}–${m.sA}</div>`:`<div class="score" style="font-size:15px;color:var(--muted)">vs</div>`;
+    const sc2=isFT?'ft':isLive?'live':'sched';
+    const dot=isLive?'<span class="live-dot"></span>':'';
+    html+=`<div class="match-card ${isLive?'live':''}" style="animation-delay:${i*0.05}s">
+      <div class="team home"><div class="team-crest">${crest(m.h)}</div><div class="team-name">${sName(m.h)}</div></div>
+      <div class="score-block">${sc}<div class="match-status ${sc2}">${dot}${m.st}</div></div>
+      <div class="team away"><div class="team-crest">${crest(m.a)}</div><div class="team-name">${sName(m.a)}</div></div>
+    </div>`;
+  });
+  c.innerHTML=html;
+}
+loadScores();
+setInterval(loadScores, 3*60*1000);
 </script>
 </body>
 </html>
